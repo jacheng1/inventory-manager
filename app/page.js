@@ -22,6 +22,8 @@ import {
   Paper,
   IconButton,
   InputBase,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import AppSettingsAltIcon from "@mui/icons-material/AppSettingsAlt";
@@ -40,6 +42,7 @@ import {
 export default function Home() {
   const [inventory, setInventory] = useState([]);
   const [open, setOpen] = useState(false);
+  const [alertOpen, alertSetOpen] = useState(false);
   const [itemName, setItemName] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -95,8 +98,25 @@ export default function Home() {
     updateInventory();
   }, []);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAlertOpen = () => {
+    alertSetOpen(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    alertSetOpen(false);
+  };
 
   const drawerWidth = 230;
 
@@ -227,7 +247,8 @@ export default function Home() {
                   borderRadius: 1,
                 }}
               >
-                <Typography variant="h6">Add item</Typography>
+                <Typography variant="h6" marginBottom="-10px">Add item</Typography>
+                <Divider />
                 <Stack width="100%" direction="row" spacing={2}>
                   <TextField
                     variant="outlined"
@@ -244,6 +265,7 @@ export default function Home() {
                       setItemName("");
 
                       handleClose();
+                      handleAlertOpen();
                     }}
                     sx={{
                       backgroundColor: "#000747",
@@ -257,6 +279,21 @@ export default function Home() {
                 </Stack>
               </Box>
             </Modal>
+            <Snackbar
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              open={alertOpen}
+              autoHideDuration={5000}
+              onClose={handleAlertClose}
+            >
+              <Alert
+                onClose={handleAlertClose}
+                severity="success"
+                variant="filled"
+                sx={{ width: '100%' }}
+              >
+                Item added successfully!
+              </Alert>
+            </Snackbar>
             <Button
               variant="contained"
               onClick={() => {
