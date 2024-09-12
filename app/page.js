@@ -356,6 +356,11 @@ export default function Home() {
                     alignItems="center"
                     justifyContent="space-between"
                     padding={5}
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#F3F4FC",
+                      }
+                    }}
                   >
                     <Typography variant="h6" textAlign="left" sx={{ flex: 1 }}>
                       {name.charAt(0).toUpperCase() + name.slice(1)}
