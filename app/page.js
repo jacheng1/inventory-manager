@@ -1,4 +1,5 @@
 "use client";
+
 import * as React from "react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -29,7 +30,6 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import InventoryIcon from "@mui/icons-material/Inventory";
 import AppSettingsAltIcon from "@mui/icons-material/AppSettingsAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import BlenderIcon from "@mui/icons-material/Blender";
@@ -45,6 +45,7 @@ import {
   query,
   updateDoc,
 } from "firebase/firestore";
+import Link from "next/link";
 
 export default function Home() {
   const [inventory, setInventory] = useState([]);
@@ -62,8 +63,8 @@ export default function Home() {
   const updateInventory = async () => {
     const snapshot = query(collection(firestore, "inventory"));
     const docs = await getDocs(snapshot);
-    const inventoryList = [];
 
+    const inventoryList = [];
     docs.forEach((doc) => {
       inventoryList.push({
         name: doc.id,
@@ -241,35 +242,43 @@ export default function Home() {
         </Typography>
         <Toolbar />
         <List>
-          {["Inventory", "Management", "Recipes"].map((text, index) => (
+          {["Management", "Recipes"].map((text, index) => (
             <ListItem
               key={text}
               disablePadding
               sx={{ marginTop: 1, marginBottom: 1 }}
             >
-              <ListItemButton
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#9196C0",
-                    borderRadius: "10px",
-                  },
-                  backgroundColor:
-                    selectedIndex === index ? "#9196C0" : "transparent",
-                  borderRadius: "10px",
+              <Link 
+                href={index === 0 ? "/" : "/recipes"}
+                passHref 
+                style={{ 
+                  textDecoration: "none",
+                  display: "block",
+                  width: "100%",
                 }}
-                onClick={() => handleSelectedIndex(index)}
               >
-                <ListItemIcon>
-                  {index === 0 ? (
-                    <InventoryIcon sx={{ color: "white" }} />
-                  ) : index === 1 ? (
-                    <AppSettingsAltIcon sx={{ color: "white" }} />
-                  ) : (
-                    <BlenderIcon sx={{ color: "white" }} />
-                  )}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ color: "white" }} />
-              </ListItemButton>
+                <ListItemButton
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#9196C0",
+                      borderRadius: "10px",
+                    },
+                    backgroundColor:
+                      selectedIndex === index ? "#9196C0" : "transparent",
+                    borderRadius: "10px",
+                  }}
+                  onClick={() => handleSelectedIndex(index)}
+                >
+                  <ListItemIcon>
+                    {index === 0 ? (
+                      <AppSettingsAltIcon sx={{ color: "white" }} />
+                    ) : (
+                      <BlenderIcon sx={{ color: "white" }} />
+                    )}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ color: "white" }} />
+                </ListItemButton>
+              </Link>
             </ListItem>
           ))}
         </List>
@@ -775,4 +784,4 @@ export default function Home() {
       </Box>
     </Box>
   );
-}
+};
