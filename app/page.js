@@ -33,8 +33,8 @@ import {
 import AppSettingsAltIcon from "@mui/icons-material/AppSettingsAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import BlenderIcon from "@mui/icons-material/Blender";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   collection,
   deleteDoc,
@@ -121,16 +121,23 @@ export default function Home() {
       if (oldDocSnap.exists()) {
         if (oldItem !== newItem) {
           const newDocRef = doc(collection(firestore, "inventory"), newItem);
-          await setDoc(newDocRef, { name: newItem, quantity: itemQuantityInt, unit: itemUnit });
+          await setDoc(newDocRef, {
+            name: newItem,
+            quantity: itemQuantityInt,
+            unit: itemUnit,
+          });
 
           await deleteDoc(oldDocRef);
         } else {
-          await updateDoc(oldDocRef, { quantity: itemQuantityInt, unit: itemUnit });
+          await updateDoc(oldDocRef, {
+            quantity: itemQuantityInt,
+            unit: itemUnit,
+          });
         }
       }
 
       await updateInventory();
-    } catch(error) {
+    } catch (error) {
       console.error("Error editing item:", error);
     }
   };
@@ -146,7 +153,7 @@ export default function Home() {
     }
 
     await updateInventory();
-  }
+  };
 
   useEffect(() => {
     updateInventory();
@@ -155,7 +162,7 @@ export default function Home() {
   const handleOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -248,10 +255,10 @@ export default function Home() {
               disablePadding
               sx={{ marginTop: 1, marginBottom: 1 }}
             >
-              <Link 
+              <Link
                 href={index === 0 ? "/" : "/recipes"}
-                passHref 
-                style={{ 
+                passHref
+                style={{
                   textDecoration: "none",
                   display: "block",
                   width: "100%",
@@ -329,14 +336,14 @@ export default function Home() {
                   borderRadius: 1,
                 }}
               >
-                <Typography 
-                  variant="h6" 
-                  marginBottom="-10px" 
+                <Typography
+                  variant="h6"
+                  marginBottom="-10px"
                   sx={{ color: "#000747" }}
                 >
                   Add New Item
                 </Typography>
-                <Typography 
+                <Typography
                   variant="h6"
                   marginTop="-5px"
                   fontSize="16px"
@@ -386,12 +393,21 @@ export default function Home() {
                       <MenuItem value="Quart (qt)">Quart (qt)</MenuItem>
                       <MenuItem value="Pint (pt)">Pint (pt)</MenuItem>
                       <MenuItem value="Cup (c)">Cup (c)</MenuItem>
-                      <MenuItem value="Fluid ounce (fl oz)">Fluid ounce (fl oz)</MenuItem>
-                      <MenuItem value="Tablespoon (tbsp)">Tablespoon (tbsp)</MenuItem>
+                      <MenuItem value="Fluid ounce (fl oz)">
+                        Fluid ounce (fl oz)
+                      </MenuItem>
+                      <MenuItem value="Tablespoon (tbsp)">
+                        Tablespoon (tbsp)
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Stack>
-                <Stack width="100%" direction="row" spacing={2} justifyContent="flex-end">
+                <Stack
+                  width="100%"
+                  direction="row"
+                  spacing={2}
+                  justifyContent="flex-end"
+                >
                   <Button
                     variant="outlined"
                     onClick={() => {
@@ -401,7 +417,7 @@ export default function Home() {
 
                       handleClose();
                     }}
-                    sx={{ 
+                    sx={{
                       borderColor: "#000747",
                       "&:hover": {
                         borderColor: "#9196C0",
@@ -444,7 +460,7 @@ export default function Home() {
                 onClose={handleAlertClose}
                 severity="success"
                 variant="filled"
-                sx={{ width: '100%' }}
+                sx={{ width: "100%" }}
               >
                 Item added successfully!
               </Alert>
@@ -465,14 +481,14 @@ export default function Home() {
                   borderRadius: 1,
                 }}
               >
-                <Typography 
-                  variant="h6" 
-                  marginBottom="-10px" 
+                <Typography
+                  variant="h6"
+                  marginBottom="-10px"
                   sx={{ color: "#000747" }}
                 >
                   Edit Item
                 </Typography>
-                <Typography 
+                <Typography
                   variant="h6"
                   marginTop="-5px"
                   fontSize="16px"
@@ -522,12 +538,21 @@ export default function Home() {
                       <MenuItem value="Quart (qt)">Quart (qt)</MenuItem>
                       <MenuItem value="Pint (pt)">Pint (pt)</MenuItem>
                       <MenuItem value="Cup (c)">Cup (c)</MenuItem>
-                      <MenuItem value="Fluid ounce (fl oz)">Fluid ounce (fl oz)</MenuItem>
-                      <MenuItem value="Tablespoon (tbsp)">Tablespoon (tbsp)</MenuItem>
+                      <MenuItem value="Fluid ounce (fl oz)">
+                        Fluid ounce (fl oz)
+                      </MenuItem>
+                      <MenuItem value="Tablespoon (tbsp)">
+                        Tablespoon (tbsp)
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Stack>
-                <Stack width="100%" direction="row" spacing={2} justifyContent="flex-end">
+                <Stack
+                  width="100%"
+                  direction="row"
+                  spacing={2}
+                  justifyContent="flex-end"
+                >
                   <Button
                     variant="outlined"
                     onClick={() => {
@@ -537,7 +562,7 @@ export default function Home() {
 
                       handleEditClose();
                     }}
-                    sx={{ 
+                    sx={{
                       borderColor: "#000747",
                       "&:hover": {
                         borderColor: "#9196C0",
@@ -580,7 +605,7 @@ export default function Home() {
                 onClose={handleEditAlertClose}
                 severity="success"
                 variant="filled"
-                sx={{ width: '100%' }}
+                sx={{ width: "100%" }}
               >
                 Item changed successfully!
               </Alert>
@@ -694,7 +719,7 @@ export default function Home() {
                     sx={{
                       "&:hover": {
                         backgroundColor: "#F3F4FC",
-                      }
+                      },
                     }}
                   >
                     <Typography variant="h6" textAlign="left" sx={{ flex: 1 }}>
@@ -755,7 +780,7 @@ export default function Home() {
                           },
                         }}
                       >
-                        <EditIcon sx={{ color: "#000747" }}/>
+                        <EditIcon sx={{ color: "#000747" }} />
                       </Button>
                       <Button
                         variant="text"
@@ -771,7 +796,7 @@ export default function Home() {
                           deleteItem(name);
                         }}
                       >
-                        <DeleteIcon sx={{ color: "#FF0000" }}/>
+                        <DeleteIcon sx={{ color: "#FF0000" }} />
                       </Button>
                     </Stack>
                   </Box>
@@ -784,4 +809,4 @@ export default function Home() {
       </Box>
     </Box>
   );
-};
+}
