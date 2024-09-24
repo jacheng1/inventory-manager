@@ -298,8 +298,12 @@ export default function Home() {
             padding: 3,
             borderRadius: 1,
             boxShadow: 3,
-            maxWidth: "1065px",
-            height: "660px",
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "100vw",
+            height: "auto",
+            maxHeight: "95vh",
+            overflowY: "auto",
             margin: "auto",
             marginTop: "-75px",
             marginBottom: "-10px",
@@ -705,8 +709,14 @@ export default function Home() {
             </Typography>
           </Box>
           <Divider />
-          <Box>
-            <Stack width="1017px" height="470px" overflow="auto">
+          <Box
+            sx={{
+              flexGrow: 1,
+              overflowY: "auto",
+              marginBottom: "-20px"
+            }}
+          >
+            <Stack maxWidth="100vw" maxHeight="100vh" overflowX="hidden" overflowY="auto">
               {filteredInventory.map(({ name, quantity, unit }, index) => (
                 <React.Fragment key={name}>
                   <Box
