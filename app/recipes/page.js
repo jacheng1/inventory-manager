@@ -25,7 +25,6 @@ import BlenderIcon from "@mui/icons-material/Blender";
 import { collection, getDocs, query } from "firebase/firestore";
 import Link from "next/link";
 import { Clock, Users } from "lucide-react";
-// import { generateRecipe } from "../pages/api/groq";
 
 export default function Recipes() {
   const [alertOpen, alertSetOpen] = useState(false);
@@ -63,7 +62,7 @@ export default function Recipes() {
 
     const inventoryList = [];
     docs.forEach((doc) => {
-      inventoryList.push(doc.data().name);
+      inventoryList.push(doc.id);
     });
 
     setInventory(inventoryList);
@@ -72,40 +71,48 @@ export default function Recipes() {
 
   const generateRecipe = async (ingredients) => {
     try {
-      const response = await fetch("../pages/api/generateRecipe", {
+      const response = await fetch("/api/generateRecipe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ ingredients }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        
+        throw new Error(errorData.error || "Failed to generate recipe");
+      }
+
       const data = await response.json();
 
       return data.recipe;
     } catch (error) {
       console.error("Error generating recipe:", error);
+
+      return null;
     }
   };
 
   const fetchRecipe = async (ingredients) => {
     try {
-      const suggestion = await generateRecipe(ingredients);
-
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(suggestion, "text/html");
+      const suggestion = await generateRecipe(ingredients); // Expecting structured JSON
+      console.log(`Suggestion content(s):\n`, suggestion);
 
       const recipeData = {
-        title: doc.querySelector(".recipe-title")?.textContent || "",
-        difficulty: doc.querySelector(".recipe-difficulty")?.textContent || "",
-        prepTime: doc.querySelector(".recipe-time:nth-of-type(1)")?.textContent || "",
-        cookTime: doc.querySelector(".recipe-time:nth-of-type(2)")?.textContent || "",
-        servings: doc.querySelector(".recipe-servings")?.textContent || "",
-        ingredients: Array.from(doc.querySelectorAll(".recipe-ingredients li")).map((li) => li.textContent),
-        instructions: Array.from(doc.querySelectorAll(".recipe-instructions li")).map((li) => li.textContent),
-        notes: doc.querySelector(".recipe-notes p")?.textContent || "",
+        title: suggestion.title || "Unknown Recipe",
+        difficulty: suggestion.difficulty || "Unknown Difficulty",
+        prepTime: suggestion.prepTime || "N/A",
+        cookTime: suggestion.cookTime || "N/A",
+        servings: suggestion.servings || "N/A",
+        ingredients: suggestion.ingredients || [],
+        instructions: suggestion.instructions || [],
+        notes: suggestion.notes || "No notes available.",
       };
 
       setRecipe(recipeData);
+      console.log(JSON.stringify(recipeData, null, 2));
     } catch (error) {
       console.error("Error; cannot fetch recipe:", error);
 
@@ -293,43 +300,65 @@ export default function Recipes() {
             ) : recipe ? (
               <Box>
                 <Typography variant="h6">{recipe.name}</Typography>
-                <Box>
-                  <Typography variant="h6" textAlign="left">
-                    {recipe.difficulty}
-                  </Typography>
-                  <Typography variant="h6" textAlign="left">
-                    <Clock />
-                    {recipe.prepTime}
-                  </Typography>
-                  <Typography variant="h6" textAlign="left">
-                    <Clock />
-                    {recipe.cookTime}
-                  </Typography>
-                  <Typography variant="h6" textAlign="left">
-                    <Users />
-                    {recipe.servings}
-                  </Typography>
+                <Box 
+                  display="flex" 
+                  alignItems="center"
+                  justifyContent="flex-start"
+                  padding={2}
+                >
+                  <Box sx={{ marginRight: 2 }}>
+                    <Typography variant="h6" textAlign="left">
+                      Difficulty: {recipe.difficulty}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
+                    <Typography variant="h6" textAlign="left" sx={{ marginLeft: 1 }}>
+                      <Clock />
+                      {recipe.prepTime}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
+                    <Typography variant="h6" textAlign="left" sx={{ marginLeft: 1 }}>
+                      <Clock />
+                      {recipe.cookTime}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant="h6" textAlign="left" sx={{ marginLeft: 1 }}>
+                      <Users />
+                      {recipe.servings}
+                    </Typography>
+                  </Box>
                 </Box>
                 <Divider />
                 <Box>
                   <Typography variant="h6">Ingredients</Typography>
                   <List>
-                    {recipe.ingredients.map((ingredient, index) => {
-                      <ListItemText key={index}>{ingredient}</ListItemText>;
-                    })}
+                  {recipe.ingredients?.length > 0 ? (
+                    recipe.ingredients.map((ingredient, index) => (
+                      <ListItemText key={index}>{ingredient}</ListItemText>
+                    ))
+                  ) : (
+                    <Typography variant="h6">No ingredients available.</Typography>
+                  )}
                   </List>
                 </Box>
+                <Divider />
                 <Box>
                   <Typography variant="h6">Instructions</Typography>
                   <List>
-                    {recipe.instructions.map((instruction, index) => {
-                      <ListItemText key={index}>{instruction}</ListItemText>;
-                    })}
+                  {recipe.instructions?.length > 0 ? (
+                    recipe.instructions.map((instructions, index) => (
+                      <ListItemText key={index}>{instructions}</ListItemText>
+                    ))
+                  ) : (
+                    <Typography variant="h6">No instructions available.</Typography>
+                  )}
                   </List>
                 </Box>
+                <Divider />
                 {recipe.notes && (
                   <Box>
-                    <Divider />
                     <Typography variant="h6">Chef notes</Typography>
                     <Typography variant="h6">{recipe.notes}</Typography>
                   </Box>

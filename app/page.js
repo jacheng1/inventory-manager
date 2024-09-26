@@ -301,8 +301,9 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             maxWidth: "100vw",
-            height: "auto",
+            height: "100vh",
             maxHeight: "95vh",
+            overflow: "hidden",
             overflowY: "auto",
             margin: "auto",
             marginTop: "-75px",
@@ -713,10 +714,9 @@ export default function Home() {
             sx={{
               flexGrow: 1,
               overflowY: "auto",
-              marginBottom: "-20px"
             }}
           >
-            <Stack maxWidth="100vw" maxHeight="100vh" overflowX="hidden" overflowY="auto">
+            <Stack maxHeight="100vh" overflowX="hidden" overflowY="auto">
               {filteredInventory.map(({ name, quantity, unit }, index) => (
                 <React.Fragment key={name}>
                   <Box
