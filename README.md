@@ -4,18 +4,18 @@
 ## About the Project
 
 ● A full-stack application that stores user-defined entries, each manageable via manual CRUD operations
-● Integrated Llama 3 LLM via Groq API to generate recipe combinations based on documents stored in Firestore
- database
+● Integrated Llama 3 LLM via Groq API to generate recipe combinations based on documents stored in Firestore database
 
 ![Screenshot](app/imanager_screenshot.png)
 
+![Screenshot](app/imanager_recipe_screenshot.png)
 
 
 ### Built With
 
 * [![JavaScript][javascript.com]][JavaScript-url]
 * [![CSS][css.com]][CSS-url]
-* [![Firebase][firebase.com]][firebase-url]
+* [![Firebase][firebase.com]][Firebase-url]
 
 
 
@@ -35,5 +35,5 @@ npm run dev
 [JavaScript-url]: https://www.javascript.com/
 [css.com]: https://img.shields.io/badge/logo-css-blue?logo=css
 [CSS-url]: https://www.w3.org/Style/CSS/Overview.en.html
-[firebase.com]: https://firebase.google.com/
-[firebase-url]: https://img.shields.io/badge/logo-firebase-orange?logo=firebase
+[firebase.com]: https://img.shields.io/badge/logo-firebase-orange?logo=firebase
+[Firebase-url]: https://firebase.google.com/
