@@ -112,7 +112,7 @@ export default function Recipes() {
       };
 
       setRecipe(recipeData);
-      console.log(JSON.stringify(recipeData, null, 2));
+      // console.log(JSON.stringify(recipeData, null, 2));
     } catch (error) {
       console.error("Error; cannot fetch recipe:", error);
 
@@ -134,7 +134,7 @@ export default function Recipes() {
     }
 
     await fetchRecipe(inventory);
-
+    
     setHasGeneratedRecipe(true);
   };
 
@@ -299,67 +299,94 @@ export default function Recipes() {
               </Typography>
             ) : recipe ? (
               <Box>
-                <Typography variant="h6">{recipe.name}</Typography>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDirection="column"
+                  marginBottom="35px"
+                >
+                  <Typography 
+                    variant="h6" 
+                    textAlign="center"
+                    sx={{
+                      color:"#7C7D83",
+                      fontSize: "30px",
+                    }}
+                  >
+                    {recipe.title}
+                  </Typography>
+                </Box>
                 <Box 
                   display="flex" 
                   alignItems="center"
-                  justifyContent="flex-start"
-                  padding={2}
+                  justifyContent="center"
+                  marginBottom="15px"
+                  sx={{
+                    width: "80%",
+                    maxWidth: "100vw",
+                    borderRadius: 8,
+                    padding: 2,
+                    margin: "0 auto",
+                    position: "relative",
+                    zIndex: 1,
+                    backgroundColor: "#F3F4FC",
+                    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                  }}
                 >
-                  <Box sx={{ marginRight: 2 }}>
-                    <Typography variant="h6" textAlign="left">
-                      Difficulty: {recipe.difficulty}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
-                    <Typography variant="h6" textAlign="left" sx={{ marginLeft: 1 }}>
-                      <Clock />
-                      {recipe.prepTime}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
-                    <Typography variant="h6" textAlign="left" sx={{ marginLeft: 1 }}>
-                      <Clock />
-                      {recipe.cookTime}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="h6" textAlign="left" sx={{ marginLeft: 1 }}>
-                      <Users />
-                      {recipe.servings}
-                    </Typography>
-                  </Box>
+                  <Typography variant="h6" textAlign="center" sx={{ flex: "0 1 auto", marginRight: 10 }}>
+                    Difficulty: {recipe.difficulty}
+                  </Typography>
+                  <Typography variant="h6" textAlign="center" sx={{ flex: "0 1 auto", marginRight: 10 }}>
+                    <Clock />
+                    Preparation Time: {recipe.prepTime}
+                  </Typography>
+                  <Typography variant="h6" textAlign="center" sx={{ flex: "0 1 auto", marginRight: 10 }}>
+                    <Clock />
+                    Cook Time: {recipe.cookTime}
+                  </Typography>
+                  <Typography variant="h6" textAlign="center" sx={{ flex: "0 1 auto" }}>
+                    <Users />
+                    Servings: {recipe.servings}
+                  </Typography>
                 </Box>
-                <Divider />
-                <Box>
-                  <Typography variant="h6">Ingredients</Typography>
+                <Divider 
+                  sx={{
+                    width: "100%",
+                    maxWidth: "100vw",
+                    margin: "-30px auto",
+                    zIndex: 0,
+                  }}
+                />
+                <Box marginTop="60px" marginBottom="15px">
+                  <Typography variant="h6" sx={{ color:"#7C7D83" }}>Ingredients</Typography>
                   <List>
                   {recipe.ingredients?.length > 0 ? (
                     recipe.ingredients.map((ingredient, index) => (
                       <ListItemText key={index}>{ingredient}</ListItemText>
                     ))
                   ) : (
-                    <Typography variant="h6">No ingredients available.</Typography>
+                    <Typography variant="h6" sx={{ color:"#7C7D83" }}>No ingredients available.</Typography>
                   )}
                   </List>
                 </Box>
                 <Divider />
-                <Box>
-                  <Typography variant="h6">Instructions</Typography>
+                <Box marginTop="15px" marginBottom="15px">
+                  <Typography variant="h6" sx={{ color:"#7C7D83" }}>Instructions</Typography>
                   <List>
                   {recipe.instructions?.length > 0 ? (
                     recipe.instructions.map((instructions, index) => (
                       <ListItemText key={index}>{instructions}</ListItemText>
                     ))
                   ) : (
-                    <Typography variant="h6">No instructions available.</Typography>
+                    <Typography variant="h6" sx={{ color:"#7C7D83" }}>No instructions available.</Typography>
                   )}
                   </List>
                 </Box>
                 <Divider />
                 {recipe.notes && (
-                  <Box>
-                    <Typography variant="h6">Chef notes</Typography>
+                  <Box marginTop="15px" marginBottom="15px">
+                    <Typography variant="h6" sx={{ color:"#7C7D83" }}>Chef Notes</Typography>
                     <Typography variant="h6">{recipe.notes}</Typography>
                   </Box>
                 )}
@@ -371,7 +398,7 @@ export default function Recipes() {
                   color: "#7C7D83",
                 }}
               >
-                Failed to generate recipe
+                Failed to generate recipe. Please try again.
               </Typography>
             ) : (
               <Typography
