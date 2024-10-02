@@ -13,7 +13,7 @@ export async function generateRecipe(ingredients) {
         role: "user",
         content: `Create a recipe using either some or all of these components: ${ingredients.join(", ")},
 
-                Return only the recipe in the following JSON structure:
+                Return **only** the recipe in the following JSON structure:
                 {
                   "title": "[Recipe Name]",
                   "difficulty": "[Difficulty Level]",
@@ -21,21 +21,21 @@ export async function generateRecipe(ingredients) {
                   "cookTime": "[Cooking Time]",
                   "servings": "[Number of servings]",
                   "ingredients": [
-                    "[Ingredient 1]",
-                    "[Ingredient 2]",
+                    "• [Ingredient 1]",
+                    "• [Ingredient 2]",
                     "...",
-                    "[Ingredient N]"
+                    "• [Ingredient N]"
                   ],
                   "instructions": [
-                    "[Step 1]",
-                    "[Step 2]",
+                    "1.) [Step 1]",
+                    "2.) [Step 2]",
                     "...",
-                    "[Step N]"
+                    "N.) [Step N]"
                   ],
                   "notes": "[Any miscellaneous tips, variations, or serving suggestions]"
                 }
 
-                Ensure the recipe is creative, uses the given components efficiently, and provides clear instructions. If there are staple items not listed in the ingredients (such as salt, pepper, cooking oil, etc.), assume that they are available and include them in the recipe.`,
+                Do not return anything other than the recipe. Ensure the recipe is creative, uses the given components efficiently, and provides clear instructions. If there are staple items not listed in the ingredients (such as salt, pepper, cooking oil, etc.), assume that they are available and include them in the recipe.`,
       },
     ],
     model: "llama3-8b-8192",
@@ -43,7 +43,7 @@ export async function generateRecipe(ingredients) {
 
   const suggestion = chatCompletion.choices[0]?.message?.content || "";
 
-  console.log("Raw suggestion:", suggestion);
+  // console.log("Raw suggestion:", suggestion);
 
   try {
     const parsedSuggestion = JSON.parse(suggestion); // Convert the string to JSON
